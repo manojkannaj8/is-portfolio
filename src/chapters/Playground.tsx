@@ -1,6 +1,7 @@
 import { chapters, projects } from '../content/portfolio'
 import type { Project } from '../content/types'
 import { ChapterHead } from '../ui/ChapterHead'
+import { CanopyScene } from './scenes/CanopyScene'
 import { HealthDemo, MapDemo, QuizDemo, RailDemo } from './playground/demos'
 import './playground.css'
 
@@ -14,11 +15,8 @@ const chapter = chapters.find((c) => c.id === 'playground')!
 export function Playground() {
   return (
     <section id={chapter.id} className="chapter playground" aria-labelledby={`${chapter.id}-title`}>
-      <div className="canopy photo-edge" aria-hidden="true">
-        <picture>
-          <source srcSet="/world/canopy.avif" type="image/avif" />
-          <img src="/world/canopy.webp" alt="" loading="lazy" decoding="async" width={1671} height={941} />
-        </picture>
+      <div className="canopy photo-edge">
+        <CanopyScene />
       </div>
       <div className="wrap playground-head">
         <ChapterHead chapter={chapter} />

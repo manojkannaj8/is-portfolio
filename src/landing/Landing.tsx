@@ -84,6 +84,7 @@ export function Landing() {
     >
       <Stage
         lit={lit}
+        active={inView}
         reduced={reduced}
         drawing={drawing}
         ink={ink}

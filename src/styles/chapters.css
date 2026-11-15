@@ -1,6 +1,7 @@
 /* ───────── Shared chapter system ───────── */
 
-html {
+/* native smooth anchors for touch screens; Lenis takes over on mouse and trackpad */
+html:not(.lenis) {
   scroll-behavior: smooth;
 }
 @media (prefers-reduced-motion: reduce) {

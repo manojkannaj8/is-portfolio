@@ -25,7 +25,8 @@ All words live in one file: [`src/content/portfolio.ts`](src/content/portfolio.t
 
 - `src/landing/`: the hero world. `world.ts` holds the positions of the 25 chalk doodles cut out of the hero photo (`public/world/doodles/`), so they can light up, react to the cursor and act as links.
 - `src/chapters/`: one component and stylesheet per chapter; `playground/demos.tsx` holds the interactive project illustrations.
-- `src/motion/`: a single shared animation loop, the smoothed pointer, and in-view/reduced-motion hooks.
+- `src/chapters/scenes/`: the living photographs. The canopy's star stickers (`public/world/canopy/`) and the sunset's drawn sun (`public/world/sun/`) are cut out of the photos over cleaned base plates, so the stars sway and the sun is drawn, glows and shimmers; plus dappled light, glitter, lens flare and fireflies.
+- `src/motion/`: a single shared animation loop (which also drives Lenis smooth scrolling on mouse and trackpad), the smoothed pointer, and in-view/reduced-motion hooks. Every effect pauses when off screen.
 - `src/ui/`: the doodle trail navigation, chapter heads and hand-drawn chalk marks.
 
 Respects `prefers-reduced-motion`, works with touch (swipe the hero to look around, draw with the chalk) and keyboard.

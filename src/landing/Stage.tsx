@@ -7,6 +7,8 @@ import { doors, marks, PHOTO, spriteSrc } from './world'
 
 interface StageProps {
   lit: boolean
+  /** false while the hero is scrolled out of view: per-frame work pauses */
+  active: boolean
   reduced: boolean
   drawing: boolean
   ink: string
@@ -21,7 +23,7 @@ interface StageProps {
  * the grass at every crop. On touch screens narrower than the photo the
  * stage scrolls sideways so the visitor can look around.
  */
-export function Stage({ lit, reduced, drawing, ink, chalkRef, onLookAround }: StageProps) {
+export function Stage({ lit, active, reduced, drawing, ink, chalkRef, onLookAround }: StageProps) {
   const scrollRef = useRef<HTMLDivElement>(null)
   const depthRef = useRef<HTMLDivElement>(null)
   const markRefs = useRef<(HTMLImageElement | null)[]>([])
@@ -61,7 +63,7 @@ export function Stage({ lit, reduced, drawing, ink, chalkRef, onLookAround }: St
   // Depth: the ground drifts gently against the pointer; small marks turn
   // toward the light when it passes near them.
   useEffect(() => {
-    if (reduced) return
+    if (reduced || !active) return
     const depth = depthRef.current
     if (!depth) return
     let rect = depth.getBoundingClientRect()
@@ -96,7 +98,7 @@ export function Stage({ lit, reduced, drawing, ink, chalkRef, onLookAround }: St
       window.removeEventListener('resize', measure)
       window.removeEventListener('scroll', measure)
     }
-  }, [reduced])
+  }, [reduced, active])
 
   return (
     <div className="stage-scroll" ref={scrollRef}>

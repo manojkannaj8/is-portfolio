@@ -1,4 +1,6 @@
+import { useEffect } from 'react'
 import { footer } from './content/portfolio'
+import { startSmoothScroll } from './motion/smoothScroll'
 import { Beginning } from './chapters/Beginning'
 import { Journey } from './chapters/Journey'
 import { Milestones } from './chapters/Milestones'
@@ -9,6 +11,8 @@ import { Landing } from './landing/Landing'
 import { Trail } from './ui/Trail'
 
 export function App() {
+  useEffect(() => startSmoothScroll(), [])
+
   return (
     <>
       <a className="skip" href="#beginning">
