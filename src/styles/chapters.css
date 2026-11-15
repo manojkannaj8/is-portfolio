@@ -1,0 +1,288 @@
+/* ───────── Shared chapter system ───────── */
+
+html {
+  scroll-behavior: smooth;
+}
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+.wrap {
+  width: min(1240px, 100% - 2 * var(--gutter));
+  margin-inline: auto;
+}
+
+.chapter {
+  position: relative;
+  z-index: 1;
+  padding-block: clamp(80px, 14svh, 160px);
+  background: var(--ground);
+  color: var(--ink-text, var(--chalk));
+  scroll-margin-top: 0;
+}
+
+/* the ragged chalk edge where one ground meets the next */
+.chalk-edge {
+  position: absolute;
+  left: 0;
+  bottom: calc(100% - 1px);
+  width: 100%;
+  height: clamp(24px, 4vw, 60px);
+  fill: var(--ground);
+  pointer-events: none;
+}
+
+/* photographs that open a chapter tear into the ground above them;
+   flow-root keeps their negative margin from collapsing into the section */
+.playground,
+.next {
+  display: flow-root;
+}
+.photo-edge {
+  position: relative;
+  z-index: 1;
+  margin-top: calc(clamp(24px, 4vw, 60px) * -1);
+  -webkit-mask:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 60' preserveAspectRatio='none'%3E%3Cpath d='M0 34C110 18 190 28 300 16s200-12 300 6 180 20 300 4 210-24 320-10 140 16 220 6V60H0Z'/%3E%3C/svg%3E")
+      top / 100% clamp(24px, 4vw, 60px) no-repeat,
+    linear-gradient(#000, #000) 0 calc(clamp(24px, 4vw, 60px) - 1px) / 100% 100% no-repeat;
+  mask:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 60' preserveAspectRatio='none'%3E%3Cpath d='M0 34C110 18 190 28 300 16s200-12 300 6 180 20 300 4 210-24 320-10 140 16 220 6V60H0Z'/%3E%3C/svg%3E")
+      top / 100% clamp(24px, 4vw, 60px) no-repeat,
+    linear-gradient(#000, #000) 0 calc(clamp(24px, 4vw, 60px) - 1px) / 100% 100% no-repeat;
+}
+
+/* ── chapter head ── */
+
+.chapter-head {
+  display: flex;
+  align-items: center;
+  gap: clamp(16px, 2.4vw, 32px);
+  margin-bottom: clamp(40px, 7svh, 88px);
+}
+.chapter-head--end {
+  flex-direction: row-reverse;
+  text-align: right;
+}
+
+.chapter-doodle {
+  flex: none;
+  width: clamp(72px, 9vw, 128px);
+  height: auto;
+  rotate: -8deg;
+  scale: 0.6;
+  opacity: 0.4;
+  transition:
+    scale 1s var(--ease-out),
+    rotate 1s var(--ease-out),
+    opacity 0.6s ease;
+}
+.chapter-head.is-seen .chapter-doodle {
+  scale: 1;
+  rotate: 0deg;
+  opacity: 1;
+}
+
+.chapter-title {
+  margin: 0;
+  font-family: var(--font-hand);
+  font-weight: 400;
+  font-size: clamp(2.75rem, 1.6rem + 4.6vw, 6rem);
+  line-height: 0.95;
+  letter-spacing: -0.01em;
+  color: var(--title, var(--chalk));
+}
+.chapter-intro {
+  max-width: 40ch;
+  margin: 0.5em 0 0;
+  font-size: var(--t-lead);
+  line-height: 1.35;
+  color: var(--muted, var(--chalk-dim));
+  text-wrap: pretty;
+}
+
+/* ── chalk marks (circle, underline) ── */
+
+.chalk-mark {
+  position: absolute;
+  overflow: visible;
+  pointer-events: none;
+}
+.chalk-mark path {
+  fill: none;
+  stroke: var(--mark, var(--sun));
+  stroke-width: 3.5;
+  stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+}
+.is-seen .chalk-mark path {
+  stroke-dashoffset: 0;
+  transition: stroke-dashoffset 0.9s var(--ease-inout) 0.25s;
+}
+.is-seen .chalk-mark path + path {
+  transition-delay: 0.85s;
+  transition-duration: 0.5s;
+}
+
+/* labels for illustrative demos */
+.illustration-note {
+  font-family: var(--font-hand);
+  font-size: 0.95rem;
+  color: var(--muted, var(--chalk-dim));
+}
+
+/* ── the trail: chapter doodles that follow you ── */
+
+.trail {
+  position: fixed;
+  z-index: 50;
+  right: clamp(10px, 1.6vw, 24px);
+  top: 50%;
+  translate: 12px -50%;
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity 0.5s ease,
+    translate 0.5s var(--ease-out);
+}
+.trail.is-shown {
+  opacity: 1;
+  translate: 0 -50%;
+  pointer-events: auto;
+}
+.trail ol {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin: 0;
+  padding: 6px;
+  list-style: none;
+  background: rgb(12 14 6 / 0.72);
+  border-radius: 999px;
+  box-shadow: 0 6px 24px rgb(0 0 0 / 0.25);
+}
+.trail a {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+}
+.trail img {
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
+  opacity: 0.55;
+  scale: 0.85;
+  transition:
+    opacity 0.3s ease,
+    scale 0.4s var(--ease-out);
+}
+.trail a:hover img,
+.trail a:focus-visible img,
+.trail a.is-here img {
+  opacity: 1;
+  scale: 1.08;
+}
+.trail-label {
+  position: absolute;
+  right: calc(100% + 10px);
+  top: 50%;
+  translate: 6px -50%;
+  padding: 4px 12px 6px;
+  border-radius: 999px;
+  background: rgb(12 14 6 / 0.85);
+  color: var(--chalk);
+  font-family: var(--font-hand);
+  font-size: 1.05rem;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity 0.25s ease,
+    translate 0.3s var(--ease-out);
+}
+.trail a:hover .trail-label,
+.trail a:focus-visible .trail-label {
+  opacity: 1;
+  translate: 0 -50%;
+}
+
+@media (max-width: 760px) {
+  .trail {
+    top: auto;
+    right: 50%;
+    bottom: max(12px, env(safe-area-inset-bottom));
+    translate: 50% 12px;
+  }
+  .trail.is-shown {
+    translate: 50% 0;
+  }
+  .trail ol {
+    flex-direction: row;
+  }
+  .trail-label {
+    display: none;
+  }
+}
+
+/* ── footer ── */
+
+.site-foot {
+  position: relative;
+  z-index: 1;
+  padding: 28px var(--gutter) calc(28px + env(safe-area-inset-bottom));
+  background: var(--night);
+  color: var(--chalk-dim);
+  font-size: var(--t-small);
+  text-align: center;
+}
+@media (max-width: 760px) {
+  .site-foot {
+    padding-bottom: 96px;
+  }
+}
+
+/* chapter heads that sit over an opening photograph stay above it */
+.playground-head,
+.next-inner {
+  z-index: 2;
+}
+
+/* reduced motion: every drawing and sticker is simply there */
+@media (prefers-reduced-motion: reduce) {
+  .chapter-doodle,
+  .sticker,
+  .chalk-mark path,
+  .stop-dot,
+  .stop-when,
+  .place-tick path,
+  .gauge-needle,
+  .trail,
+  .trail img {
+    transition: none !important;
+    animation: none !important;
+  }
+  .chapter-doodle {
+    scale: 1;
+    rotate: 0deg;
+    opacity: 1;
+  }
+  .sticker {
+    opacity: 1;
+    scale: 1;
+    translate: 0 0;
+  }
+  .chalk-mark path {
+    stroke-dashoffset: 0;
+  }
+  .map.is-sent .map-ring {
+    animation: none;
+    opacity: 0.6;
+  }
+}

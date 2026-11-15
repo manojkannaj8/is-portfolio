@@ -1,0 +1,170 @@
+.toolkit {
+  --ground: #1f2b26;
+  --muted: #b9c4bd;
+  background-color: var(--ground);
+  /* a little chalk dust on the board */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .07 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+.board {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: clamp(32px, 4vw, 64px);
+  align-items: start;
+}
+
+.chalkbox {
+  grid-column: 1 / span 7;
+  display: grid;
+  gap: clamp(24px, 4svh, 36px);
+}
+
+.stick-group-name {
+  margin: 0 0 10px;
+  font-family: var(--font-hand);
+  font-weight: 400;
+  font-size: 1.2rem;
+  color: var(--c);
+}
+
+.sticks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* each tool is a stick of chalk in its group's colour */
+.stick-btn {
+  position: relative;
+  min-height: 44px;
+  padding: 10px 18px 10px 16px;
+  border-radius: 6px 14px 14px 6px;
+  background: color-mix(in srgb, var(--c) 88%, #fff);
+  color: #1b1c0c;
+  font-size: 0.95rem;
+  font-weight: 620;
+  box-shadow:
+    inset 0 -4px 0 rgb(0 0 0 / 0.14),
+    0 3px 8px rgb(0 0 0 / 0.25);
+  transition:
+    translate 0.3s var(--ease-out),
+    rotate 0.3s var(--ease-out),
+    opacity 0.3s ease,
+    box-shadow 0.3s ease;
+}
+.stick-btn::after {
+  /* the worn, rounded end of the chalk */
+  content: '';
+  position: absolute;
+  right: 5px;
+  top: 7px;
+  bottom: 9px;
+  width: 3px;
+  border-radius: 3px;
+  background: rgb(255 255 255 / 0.5);
+}
+.board.has-tool .stick-btn:not(.is-lit),
+.board.has-place .stick-btn:not(.is-lit) {
+  opacity: 0.35;
+}
+.stick-btn.is-lit,
+.stick-btn[aria-pressed='true'] {
+  translate: 0 -5px;
+  rotate: -3deg;
+  box-shadow:
+    inset 0 -4px 0 rgb(0 0 0 / 0.14),
+    0 10px 20px rgb(0 0 0 / 0.35);
+}
+.stick-btn[aria-pressed='true'] {
+  outline: 2px dashed var(--chalk);
+  outline-offset: 3px;
+}
+
+.slate {
+  grid-column: 9 / span 4;
+  position: sticky;
+  top: 15svh;
+  padding-top: 4px;
+}
+.slate-hint {
+  min-height: 3.2em;
+  margin: 0 0 18px;
+  font-family: var(--font-hand);
+  font-size: 1.35rem;
+  line-height: 1.2;
+  color: var(--chalk);
+}
+.places {
+  display: grid;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.place {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px dashed rgb(247 241 225 / 0.2);
+  font-size: var(--t-body);
+  font-weight: 520;
+  color: var(--muted);
+  transition: color 0.3s ease;
+}
+.place.is-lit,
+.place.is-pointed {
+  color: var(--chalk);
+}
+.place-tick {
+  flex: none;
+  width: 28px;
+  height: 22px;
+  overflow: visible;
+}
+.place-tick path {
+  fill: none;
+  stroke: var(--sun);
+  stroke-width: 4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  transition: stroke-dashoffset 0.45s var(--ease-out);
+}
+.place.is-lit .place-tick path {
+  stroke-dashoffset: 0;
+}
+
+@media (max-width: 900px) {
+  .chalkbox,
+  .slate {
+    grid-column: 1 / -1;
+  }
+  /* on phones the board stays pinned above the chalk while you pick */
+  .slate {
+    order: -1;
+    top: 0;
+    z-index: 2;
+    margin-inline: calc(var(--gutter) * -1);
+    padding: 12px var(--gutter) 8px;
+    background: var(--ground);
+    box-shadow: 0 10px 18px -12px rgb(0 0 0 / 0.6);
+  }
+  .slate-hint {
+    min-height: 2.4em;
+    margin-bottom: 6px;
+    font-size: 1.1rem;
+  }
+  .place {
+    padding: 5px 0;
+    font-size: 0.9rem;
+  }
+  .place-tick {
+    width: 20px;
+    height: 16px;
+  }
+}

@@ -1,0 +1,158 @@
+.milestones {
+  --ground: #f3ecd9;
+  --ink-text: #1d1b10;
+  --title: #1d1b10;
+  --muted: #5d5a48;
+}
+.milestones .chapter-doodle {
+  filter: drop-shadow(0 2px 0 rgb(29 27 16 / 0.35)) brightness(0.92);
+}
+
+/* a sticker wall on a loose 12-column grid: different sizes, no boxes */
+.awards {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: clamp(48px, 8svh, 88px) clamp(24px, 3vw, 48px);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.award {
+  display: flex;
+  align-items: flex-start;
+  gap: clamp(16px, 2vw, 28px);
+}
+.award--0 {
+  grid-column: 1 / span 7;
+}
+.award--1 {
+  grid-column: 9 / span 4;
+  margin-top: clamp(24px, 8svh, 96px);
+}
+.award--2 {
+  grid-column: 2 / span 5;
+}
+.award--3 {
+  grid-column: 7 / span 6;
+  margin-top: clamp(16px, 4svh, 48px);
+}
+.award--4 {
+  grid-column: 4 / span 6;
+}
+
+.sticker {
+  flex: none;
+  width: clamp(72px, 7vw, 104px);
+  height: auto;
+  overflow: visible;
+  rotate: var(--tilt);
+  opacity: 0;
+  scale: 1.6;
+  translate: 0 -24px;
+  transition:
+    opacity 0.25s ease,
+    scale 0.55s var(--ease-out),
+    translate 0.55s var(--ease-out);
+}
+.award--0 .sticker {
+  width: clamp(110px, 11vw, 168px);
+}
+.award.is-seen .sticker {
+  opacity: 1;
+  scale: 1;
+  translate: 0 0;
+}
+@media (hover: hover) {
+  .award:hover .sticker {
+    rotate: calc(var(--tilt) * -0.5);
+    transition-duration: 0.25s, 0.5s, 0.5s;
+  }
+  .sticker {
+    transition-property: opacity, scale, translate, rotate;
+  }
+}
+
+.sticker-shadow {
+  fill: rgb(29 27 16 / 0.22);
+  translate: 1.5px 3px;
+  filter: blur(1.5px);
+}
+.sticker-body {
+  stroke-linejoin: round;
+}
+.sticker-gloss {
+  fill: #fff;
+  opacity: 0.22;
+}
+.sticker-shine {
+  fill: none;
+  stroke: #fff;
+  stroke-width: 3;
+  stroke-linecap: round;
+  opacity: 0.75;
+}
+.sticker--gold .sticker-body {
+  fill: #f2b51c;
+  stroke: #c98a00;
+  stroke-width: 2;
+}
+.sticker--yellow .sticker-body {
+  fill: #f6d531;
+  stroke: #cfa500;
+  stroke-width: 2;
+}
+.sticker--red .sticker-body {
+  fill: #dd2b26;
+  stroke: #a5160f;
+  stroke-width: 2;
+}
+.sticker--blue .sticker-body {
+  fill: #3ca6e6;
+  stroke: #1e77b5;
+  stroke-width: 2;
+}
+.sticker--outline .sticker-body {
+  fill: none;
+  stroke: #c98a00;
+  stroke-width: 3;
+  stroke-dasharray: 6 6;
+}
+.sticker--outline .sticker-shadow {
+  display: none;
+}
+
+.award-when {
+  margin: 0;
+  font-family: var(--font-hand);
+  font-size: 1.15rem;
+  color: #b0452a;
+}
+.award-title {
+  margin: 2px 0 6px;
+  font-size: clamp(1.4rem, 1.05rem + 1.3vw, 2.2rem);
+  font-weight: 640;
+  line-height: 1.08;
+  letter-spacing: -0.025em;
+  text-wrap: balance;
+}
+.award--0 .award-title {
+  font-size: clamp(1.9rem, 1.2rem + 2.8vw, 3.6rem);
+}
+.award-detail {
+  margin: 0;
+  max-width: 30ch;
+  color: var(--muted);
+  text-wrap: pretty;
+}
+
+@media (max-width: 900px) {
+  .award:nth-child(n) {
+    grid-column: 1 / -1;
+    margin-top: 0;
+  }
+}
+
+.milestones .chalk-edge {
+  filter: drop-shadow(0 -1px 0 rgb(0 0 0 / 0.08));
+}

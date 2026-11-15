@@ -1,0 +1,44 @@
+/*
+ * The palette is sampled from the three photographs:
+ * grass shadow and golden-hour light from the chalk garden,
+ * the chalk colours themselves, canopy sky, sunset dusk.
+ */
+:root {
+  /* grounds */
+  --night: #0d1007;
+  --soil: #1b1c0c;
+  --moss: #2c3415;
+
+  /* light */
+  --chalk: #f7f1e1;
+  --chalk-dim: #d9d0b8;
+  --gold: #f2b54a;
+  --dusk: #e7956a;
+  --sky: #2f86df;
+
+  /* chalk inks, as drawn in the photograph */
+  --sun: #f4c430;
+  --coral: #f06a3c;
+  --teal: #6cc3b5;
+  --pink: #f39ab0;
+  --lime: #a6d13d;
+
+  --font-hand: 'Mansalva', 'Comic Sans MS', cursive;
+  --font-sans: 'Bricolage Grotesque Variable', ui-sans-serif, system-ui, sans-serif;
+
+  /* type scale (fluid) */
+  --t-small: clamp(0.8125rem, 0.78rem + 0.15vw, 0.875rem);
+  --t-body: clamp(1rem, 0.95rem + 0.25vw, 1.1875rem);
+  --t-lead: clamp(1.0625rem, 0.95rem + 0.45vw, 1.375rem);
+  --t-note: clamp(1.25rem, 1.05rem + 0.9vw, 1.75rem);
+
+  --gutter: clamp(16px, 4vw, 56px);
+
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-inout: cubic-bezier(0.65, 0, 0.35, 1);
+
+  /* text over photographs: a real, soft, offset shadow */
+  --lift: 0 1px 2px rgb(8 10 4 / 0.55), 0 2px 18px rgb(8 10 4 / 0.55);
+
+  color-scheme: dark;
+}
