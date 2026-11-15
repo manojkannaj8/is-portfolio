@@ -1,0 +1,270 @@
+/* ───────── Living photographs: canopy and sunset ───────── */
+
+.scene {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  container-type: size;
+  isolation: isolate;
+}
+
+/* the photo box, sized like object-fit: cover so cut-outs stay registered */
+.cover {
+  --w: max(100cqw, 100cqh * var(--a));
+  position: absolute;
+  width: var(--w);
+  height: calc(var(--w) / var(--a));
+  left: calc((100cqw - var(--w)) * var(--px));
+  top: calc((100cqh - var(--w) / var(--a)) * var(--py));
+  scale: 1.05;
+}
+.cover-layer {
+  position: absolute;
+  inset: 0;
+  will-change: transform;
+}
+.cover-photo {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* ── canopy ── */
+
+.hang {
+  position: absolute;
+  height: auto;
+  transform-origin: 50% 14%;
+  will-change: transform;
+}
+.hang--glint {
+  animation: glint 9s ease-in-out var(--d) infinite;
+}
+@keyframes glint {
+  0%,
+  84%,
+  100% {
+    filter: brightness(1);
+  }
+  90% {
+    filter: brightness(1.5) saturate(1.12);
+  }
+}
+
+/* sunlight moving through the leaves */
+.dapple {
+  position: absolute;
+  width: 36%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgb(255 250 214 / 0.6), rgb(255 244 196 / 0.2) 38%, transparent 68%);
+  mix-blend-mode: soft-light;
+  pointer-events: none;
+}
+.dapple--1 {
+  left: 48%;
+  top: -6%;
+  animation: dapple-a 17s ease-in-out infinite alternate;
+}
+.dapple--2 {
+  left: 8%;
+  top: 30%;
+  width: 28%;
+  animation: dapple-b 21s ease-in-out infinite alternate;
+}
+.dapple--3 {
+  left: 66%;
+  top: 46%;
+  width: 30%;
+  animation: dapple-a 24s ease-in-out -8s infinite alternate-reverse;
+}
+@keyframes dapple-a {
+  from {
+    translate: -6% -4%;
+    opacity: 0.7;
+  }
+  to {
+    translate: 10% 8%;
+    opacity: 1;
+  }
+}
+@keyframes dapple-b {
+  from {
+    translate: 8% 6%;
+    opacity: 1;
+  }
+  to {
+    translate: -8% -10%;
+    opacity: 0.6;
+  }
+}
+
+.sunshafts {
+  position: absolute;
+  inset: -12%;
+  background: repeating-linear-gradient(
+    112deg,
+    transparent 0 6%,
+    rgb(255 244 205 / 0.18) 9%,
+    transparent 12.5%
+  );
+  -webkit-mask-image: radial-gradient(110% 85% at 82% 0%, #000, transparent 72%);
+  mask-image: radial-gradient(110% 85% at 82% 0%, #000, transparent 72%);
+  mix-blend-mode: screen;
+  pointer-events: none;
+  animation: shafts 19s ease-in-out infinite alternate;
+}
+@keyframes shafts {
+  from {
+    translate: -3% 0;
+    opacity: 0.55;
+  }
+  to {
+    translate: 3% 0;
+    opacity: 1;
+  }
+}
+
+.glitter,
+.fireflies {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+/* ── sunset ── */
+
+.sun-glow {
+  position: absolute;
+  left: var(--sx);
+  top: var(--sy);
+  width: 46%;
+  aspect-ratio: 1;
+  translate: -50% -50%;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgb(255 238 176 / 0.8) 0%,
+    rgb(255 196 98 / 0.34) 28%,
+    rgb(255 150 70 / 0.1) 46%,
+    transparent 66%
+  );
+  mix-blend-mode: screen;
+  pointer-events: none;
+  animation: sun-breathe 6.5s ease-in-out infinite;
+}
+@keyframes sun-breathe {
+  0%,
+  100% {
+    scale: 0.94;
+    opacity: 0.75;
+  }
+  50% {
+    scale: 1.08;
+    opacity: 1;
+  }
+}
+
+@property --sweep {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 0deg;
+}
+@property --grow {
+  syntax: '<percentage>';
+  inherits: false;
+  initial-value: 0%;
+}
+
+.sun img {
+  position: absolute;
+}
+
+/* the scribbled core is drawn round in one go */
+.sun-core {
+  -webkit-mask-image: conic-gradient(from 210deg at var(--ox) var(--oy), #000 calc(var(--sweep) - 40deg), rgb(0 0 0 / 0.2) var(--sweep));
+  mask-image: conic-gradient(from 210deg at var(--ox) var(--oy), #000 calc(var(--sweep) - 40deg), rgb(0 0 0 / 0.2) var(--sweep));
+  transition: --sweep 1.5s cubic-bezier(0.45, 0.05, 0.25, 1) 0.2s;
+}
+.sun.is-drawn .sun-core {
+  --sweep: 420deg;
+  animation: core-breathe 5.5s ease-in-out 2.4s infinite;
+}
+
+/* then each ray, from the sun outward */
+.sun-ray {
+  -webkit-mask-image: linear-gradient(var(--dir), #000 calc(var(--grow) - 28%), rgb(0 0 0 / 0.2) var(--grow));
+  mask-image: linear-gradient(var(--dir), #000 calc(var(--grow) - 28%), rgb(0 0 0 / 0.2) var(--grow));
+  transition: --grow 0.55s var(--ease-out) calc(1.35s + var(--i) * 95ms);
+}
+.sun.is-drawn .sun-ray {
+  --grow: 135%;
+  animation: ray-pulse 3.4s ease-in-out calc(2.6s + var(--i) * 0.42s) infinite;
+}
+
+@keyframes core-breathe {
+  0%,
+  100% {
+    scale: 1;
+  }
+  50% {
+    scale: 1.025;
+  }
+}
+@keyframes ray-pulse {
+  0%,
+  100% {
+    scale: 1;
+  }
+  50% {
+    scale: 1.08;
+  }
+}
+
+/* lens flare strung from the sun toward the pointer */
+.flares {
+  position: absolute;
+  inset: 0;
+  mix-blend-mode: screen;
+  pointer-events: none;
+}
+.flare {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: var(--s);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  opacity: 0;
+  will-change: transform, opacity;
+}
+.flare--disc {
+  background: radial-gradient(circle, rgb(255 214 150 / 0.55), rgb(255 170 90 / 0.16) 58%, transparent 70%);
+}
+.flare--ring {
+  background: radial-gradient(circle, transparent 50%, rgb(200 255 210 / 0.5) 60%, transparent 71%);
+}
+.flare--soft {
+  background: radial-gradient(circle, rgb(255 140 80 / 0.3), transparent 66%);
+}
+.flare--hex {
+  border-radius: 0;
+  clip-path: polygon(25% 4%, 75% 4%, 100% 50%, 75% 96%, 25% 96%, 0 50%);
+  background: radial-gradient(circle, rgb(170 225 255 / 0.36), rgb(170 225 255 / 0.12) 70%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hang,
+  .dapple,
+  .sunshafts,
+  .sun-glow,
+  .sun img {
+    animation: none !important;
+    transition: none !important;
+  }
+  .flares {
+    display: none;
+  }
+}

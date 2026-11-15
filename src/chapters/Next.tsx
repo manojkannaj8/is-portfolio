@@ -1,5 +1,6 @@
 import { chapters, next, profile } from '../content/portfolio'
 import { ChapterHead } from '../ui/ChapterHead'
+import { SunsetScene } from './scenes/SunsetScene'
 import './next.css'
 
 const chapter = chapters.find((c) => c.id === 'next')!
@@ -12,11 +13,8 @@ const chapter = chapters.find((c) => c.id === 'next')!
 export function Next() {
   return (
       <section id={chapter.id} className="chapter next" aria-labelledby={`${chapter.id}-title`}>
-        <div className="sunset photo-edge" aria-hidden="true">
-          <picture>
-            <source srcSet="/world/sunset.avif" type="image/avif" />
-            <img src="/world/sunset.webp" alt="" loading="lazy" decoding="async" width={1672} height={941} />
-          </picture>
+        <div className="sunset photo-edge">
+          <SunsetScene />
         </div>
 
         <div className="wrap next-inner">
