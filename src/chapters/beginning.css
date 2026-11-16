@@ -81,8 +81,16 @@
   margin: clamp(16px, 3svh, 32px) 0 0;
 }
 .beginning-facts div {
+  position: relative;
   padding: 16px 0 18px;
+}
+/* the dashed rule is its own layer so it can be drawn like a chalk line */
+.beginning-facts div::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto;
   border-top: 1px dashed rgb(247 241 225 / 0.28);
+  transform-origin: left;
 }
 .beginning-facts dt {
   font-family: var(--font-hand);

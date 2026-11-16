@@ -14,6 +14,9 @@ const chapter = chapters.find((c) => c.id === 'beginning')!
  */
 export function Beginning() {
   const [ref, seen] = useSeen<HTMLParagraphElement>(0.6)
+  // watch the grid, not the photo: a fully clipped element never counts as visible
+  const [photoRef, photoSeen] = useSeen<HTMLDivElement>(0.2)
+  const [factsRef, factsSeen] = useSeen<HTMLDListElement>(0.4)
   return (
     <section id={chapter.id} className="chapter beginning" aria-labelledby={`${chapter.id}-title`}>
       <ChalkEdge variant={0} />
@@ -33,7 +36,7 @@ export function Beginning() {
           )}
         </p>
 
-        <div className="beginning-grid">
+        <div ref={photoRef} className={`beginning-grid${photoSeen ? ' is-seen' : ''}`}>
           <figure className="beginning-photo">
             <picture>
               <source srcSet={PHOTO.avif} type="image/avif" />
@@ -54,9 +57,9 @@ export function Beginning() {
             ))}
           </div>
 
-          <dl className="beginning-facts">
-            {beginning.facts.map((f) => (
-              <div key={f.label}>
+          <dl ref={factsRef} className={`beginning-facts${factsSeen ? ' is-seen' : ''}`}>
+            {beginning.facts.map((f, i) => (
+              <div key={f.label} style={{ '--i': i } as React.CSSProperties}>
                 <dt>{f.label}</dt>
                 <dd>{f.value}</dd>
               </div>

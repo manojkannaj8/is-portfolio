@@ -369,9 +369,13 @@ export const next: Next = {
   /** Ambitions in Ishita's own words; hidden while null. */
   ambition: null,
   invite: 'Want to build something together, or just say hi?',
+  copy: 'copy',
+  copied: 'copied',
+  copyFailed: 'copy failed',
   closing: 'See you on the grass.',
 }
 
 export const footer = {
   line: 'Made by Ishita Singh with chalk, grass and a lot of React.',
+  backToTop: 'back to the grass',
 }

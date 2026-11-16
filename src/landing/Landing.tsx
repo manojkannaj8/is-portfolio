@@ -79,6 +79,7 @@ export function Landing() {
   return (
     <section
       ref={heroRef}
+      id="grass"
       className={`hero${lit ? ' is-lit' : ''}${reduced ? ' is-still' : ''}${drawing ? ' is-drawing' : ''}`}
       aria-labelledby="hero-name"
     >

@@ -236,6 +236,9 @@ html:not(.lenis) {
 
 .site-foot {
   position: relative;
+  display: grid;
+  justify-items: center;
+  gap: 4px;
   z-index: 1;
   padding: 28px var(--gutter) calc(28px + env(safe-area-inset-bottom));
   background: var(--night);

@@ -1,5 +1,7 @@
 import { chapters, next, profile } from '../content/portfolio'
+import { useSeen } from '../motion/useInView'
 import { ChapterHead } from '../ui/ChapterHead'
+import { CopyEmail } from '../ui/CopyEmail'
 import { SunsetScene } from './scenes/SunsetScene'
 import './next.css'
 
@@ -11,6 +13,8 @@ const chapter = chapters.find((c) => c.id === 'next')!
  * to reach me.
  */
 export function Next() {
+  const [nowRef, nowSeen] = useSeen<HTMLDivElement>(0.4)
+  const [endRef, endSeen] = useSeen<HTMLParagraphElement>(0.8)
   return (
       <section id={chapter.id} className="chapter next" aria-labelledby={`${chapter.id}-title`}>
         <div className="sunset photo-edge">
@@ -21,11 +25,13 @@ export function Next() {
           <ChapterHead chapter={chapter} />
 
           <div className="next-grid">
-            <div className="next-now">
+            <div ref={nowRef} className={`next-now${nowSeen ? ' is-seen' : ''}`}>
               <h3 className="next-label">right now</h3>
               <ul>
-                {next.now.map((n) => (
-                  <li key={n}>{n}</li>
+                {next.now.map((n, i) => (
+                  <li key={n} style={{ '--i': i } as React.CSSProperties}>
+                    {n}
+                  </li>
                 ))}
               </ul>
               {next.ambition && <p className="next-ambition">{next.ambition}</p>}
@@ -33,9 +39,12 @@ export function Next() {
 
             <div className="next-contact">
               <p className="next-invite">{next.invite}</p>
-              <a className="next-email" href={`mailto:${profile.email}`}>
-                {profile.email}
-              </a>
+              <div className="next-email-row">
+                <a className="next-email" href={`mailto:${profile.email}`}>
+                  {profile.email}
+                </a>
+                <CopyEmail email={profile.email} labels={next} />
+              </div>
               <ul className="next-links">
                 <li>
                   <a href={profile.links.github.href} target="_blank" rel="noreferrer">
@@ -58,7 +67,7 @@ export function Next() {
             </div>
           </div>
 
-          <p className="next-closing">{next.closing}</p>
+          <p ref={endRef} className={`next-closing${endSeen ? ' is-seen' : ''}`}>{next.closing}</p>
         </div>
       </section>
   )

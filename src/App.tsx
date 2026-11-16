@@ -9,6 +9,8 @@ import { Playground } from './chapters/Playground'
 import { Toolkit } from './chapters/Toolkit'
 import { Landing } from './landing/Landing'
 import { Trail } from './ui/Trail'
+// after every chapter's own stylesheet, so its motion states win
+import './styles/motion.css'
 
 export function App() {
   useEffect(() => startSmoothScroll(), [])
@@ -29,6 +31,12 @@ export function App() {
         <Next />
       </main>
       <footer className="site-foot">
+        <a className="back-up" href="#grass">
+          <svg viewBox="0 0 20 28" aria-hidden="true">
+            <path d="M10 25V4M3 11l7-7 7 7" />
+          </svg>
+          {footer.backToTop}
+        </a>
         <p>
           {footer.line} © {new Date().getFullYear()}
         </p>

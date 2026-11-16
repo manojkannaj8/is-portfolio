@@ -1,0 +1,338 @@
+/* ───────── Chapter motion and small details ─────────
+ *
+ * One moment per chapter, each borrowed from its own world:
+ *   chapter titles   written in chalk, like the name on the grass
+ *   the beginning    the photo is uncovered, the fact lines drawn
+ *   the playground   each paper demo is set down on the table; the stamp lands
+ *   the journey      each stop settles toward the path as it reaches it
+ *   the milestones   words follow the sticker that has just been pressed on
+ *   the toolkit      the chalk is dropped into the box
+ *   what's next      the "right now" rays are drawn; the last line is written
+ *
+ * The resting state of every element is its final layout. The "before"
+ * states only exist when motion is welcome, so reduced motion (or a missed
+ * observer) simply shows everything.
+ */
+
+/* ── feedback: every pressable thing gives a little ── */
+
+.chip:active,
+.paper-action:active,
+.stick-btn:active,
+.quiz-option:not(:disabled):active,
+.copy-btn:active,
+.chalk-toggle:active,
+.trail a:active {
+  scale: 0.97;
+}
+
+/* ── copy the email ── */
+
+.next-email-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 16px;
+}
+.copy-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 8px 16px 8px 12px;
+  border: 1.5px dashed rgb(247 241 225 / 0.35);
+  border-radius: 999px;
+  font-family: var(--font-hand);
+  font-size: 1.05rem;
+  color: var(--chalk);
+  transition:
+    border-color 0.2s ease,
+    background-color 0.2s ease;
+}
+@media (hover: hover) and (pointer: fine) {
+  .copy-btn:hover {
+    border-color: var(--sun);
+    background: rgb(244 196 48 / 0.08);
+  }
+}
+.copy-btn svg {
+  width: 20px;
+  height: 20px;
+  overflow: visible;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.copy-icon {
+  transform-box: fill-box;
+  transform-origin: center;
+  transition:
+    opacity 0.18s ease,
+    scale 0.2s var(--ease-out);
+}
+.copy-tick {
+  stroke: var(--lime);
+  stroke-width: 2.6;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  transition: stroke-dashoffset 0.35s var(--ease-out);
+}
+.copy-btn.is-copied {
+  border-color: var(--lime);
+}
+.copy-btn.is-copied .copy-icon,
+.copy-btn.is-failed .copy-icon {
+  opacity: 0;
+  scale: 0.6;
+}
+.copy-btn.is-copied .copy-tick {
+  stroke-dashoffset: 0;
+  transition-delay: 0.08s;
+}
+.copy-labels {
+  display: grid;
+}
+.copy-label {
+  grid-area: 1 / 1;
+  transition:
+    opacity 0.2s ease,
+    translate 0.25s var(--ease-out);
+}
+.copy-label--copied,
+.copy-label--failed {
+  opacity: 0;
+  translate: 0 6px;
+}
+.is-copied .copy-label--idle,
+.is-failed .copy-label--idle {
+  opacity: 0;
+  translate: 0 -6px;
+}
+.is-copied .copy-label--copied,
+.is-failed .copy-label--failed {
+  opacity: 1;
+  translate: 0 0;
+}
+.is-failed .copy-label--failed {
+  color: var(--coral);
+}
+
+/* ── back to the grass ── */
+
+.back-up {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  margin-bottom: 6px;
+  font-family: var(--font-hand);
+  font-size: 1.2rem;
+  color: var(--sun);
+  text-decoration: none;
+}
+.back-up svg {
+  width: 14px;
+  height: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: translate 0.3s var(--ease-out);
+}
+.back-up:hover svg,
+.back-up:focus-visible svg {
+  translate: 0 -4px;
+}
+.site-foot p {
+  margin: 0;
+}
+
+/* ── the toolkit's hint changes softly ── */
+
+.slate-hint-text {
+  display: block;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .slate-hint-text {
+    animation: hint-in 0.28s var(--ease-out);
+  }
+  @keyframes hint-in {
+    from {
+      opacity: 0;
+      translate: 0 4px;
+    }
+  }
+
+  /* chapter titles: written left to right, like the name on the grass */
+  .chapter-title,
+  .next-closing {
+    -webkit-mask-image: linear-gradient(100deg, #000 42%, transparent 58%);
+    mask-image: linear-gradient(100deg, #000 42%, transparent 58%);
+    -webkit-mask-size: 260% 100%;
+    mask-size: 260% 100%;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-position: 100% 0;
+    mask-position: 100% 0;
+  }
+  .chapter-head.is-seen .chapter-title,
+  .next-closing.is-seen {
+    -webkit-mask-position: 0 0;
+    mask-position: 0 0;
+    transition:
+      mask-position 1.2s cubic-bezier(0.55, 0.08, 0.3, 1) 0.15s,
+      -webkit-mask-position 1.2s cubic-bezier(0.55, 0.08, 0.3, 1) 0.15s;
+  }
+  .next-closing.is-seen {
+    transition-duration: 1.7s;
+  }
+  .chapter-intro {
+    opacity: 0;
+    translate: 0 6px;
+  }
+  .chapter-head.is-seen .chapter-intro {
+    opacity: 1;
+    translate: 0 0;
+    transition:
+      opacity 0.6s var(--ease-out) 0.75s,
+      translate 0.6s var(--ease-out) 0.75s;
+  }
+
+  /* the beginning: the photo is uncovered from below, the facts are ruled in */
+  .beginning-photo {
+    clip-path: inset(100% -20% -20% -20% round 6px);
+  }
+  .beginning-photo img {
+    translate: 0 6%;
+  }
+  .beginning-grid.is-seen .beginning-photo {
+    clip-path: inset(-20% -20% -20% -20% round 6px);
+    transition: clip-path 1.1s var(--ease-inout);
+  }
+  .beginning-grid.is-seen .beginning-photo img {
+    translate: 0 0;
+    transition: translate 1.5s var(--ease-out);
+  }
+  .beginning-facts div::before {
+    scale: 0 1;
+  }
+  .beginning-facts dt,
+  .beginning-facts dd {
+    opacity: 0;
+  }
+  .beginning-facts.is-seen div::before {
+    scale: 1 1;
+    transition: scale 0.7s var(--ease-out) calc(var(--i) * 90ms);
+  }
+  .beginning-facts.is-seen dt,
+  .beginning-facts.is-seen dd {
+    opacity: 1;
+    transition: opacity 0.5s ease calc(var(--i) * 90ms + 0.3s);
+  }
+
+  /* the playground: each paper is set down, the stamp lands */
+  .exhibit-visual {
+    opacity: 0;
+    translate: 0 28px;
+    rotate: -1.2deg;
+  }
+  .exhibit--b .exhibit-visual {
+    rotate: 1.2deg;
+  }
+  .exhibit.is-seen .exhibit-visual {
+    opacity: 1;
+    translate: 0 0;
+    rotate: 0deg;
+    transition:
+      opacity 0.45s ease,
+      translate 0.9s var(--ease-out),
+      rotate 0.9s var(--ease-out);
+  }
+  .stamp {
+    opacity: 0;
+    scale: 1.5;
+  }
+  .exhibit.is-seen .stamp {
+    opacity: 1;
+    scale: 1;
+    transition:
+      opacity 0.15s ease 0.6s,
+      scale 0.4s var(--ease-out) 0.6s;
+  }
+
+  /* the journey: each stop settles toward the path as the chalk reaches it */
+  .stop-body {
+    --from: 14px;
+    opacity: 0.6;
+    translate: var(--from) 0;
+    transition:
+      opacity 0.6s ease,
+      translate 0.7s var(--ease-out);
+  }
+  .stop:nth-child(even) .stop-body {
+    --from: -14px;
+  }
+  .stop.is-reached .stop-body {
+    opacity: 1;
+    translate: 0 0;
+  }
+
+  /* the milestones: the words follow the sticker */
+  .award-text {
+    opacity: 0;
+    translate: 0 10px;
+  }
+  .award.is-seen .award-text {
+    opacity: 1;
+    translate: 0 0;
+    transition:
+      opacity 0.5s ease 0.22s,
+      translate 0.6s var(--ease-out) 0.22s;
+  }
+
+  /* the toolkit: chalk dropped into the box, group by group */
+  .chalkbox:not(.is-seen) .stick-btn {
+    opacity: 0;
+  }
+  .chalkbox.is-seen .stick-btn {
+    animation: chalk-drop 0.55s var(--ease-out) calc(var(--i) * 35ms) backwards;
+  }
+  @keyframes chalk-drop {
+    from {
+      opacity: 0;
+      translate: 0 -18px;
+      rotate: var(--r);
+    }
+  }
+
+  /* what's next: the rays are drawn beside each line */
+  .next-now li {
+    opacity: 0;
+    translate: 0 8px;
+  }
+  .next-now li::before {
+    scale: 0 1;
+    transform-origin: left;
+  }
+  .next-now.is-seen li {
+    opacity: 1;
+    translate: 0 0;
+    transition:
+      opacity 0.5s ease calc(var(--i) * 110ms),
+      translate 0.6s var(--ease-out) calc(var(--i) * 110ms);
+  }
+  .next-now.is-seen li::before {
+    scale: 1 1;
+    transition: scale 0.4s var(--ease-out) calc(var(--i) * 110ms + 0.15s);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) and (max-width: 760px) {
+  .stop:nth-child(n) .stop-body {
+    --from: 12px;
+  }
+}

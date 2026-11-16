@@ -1,4 +1,5 @@
 import { chapters, projects } from '../content/portfolio'
+import { useSeen } from '../motion/useInView'
 import type { Project } from '../content/types'
 import { ChapterHead } from '../ui/ChapterHead'
 import { CanopyScene } from './scenes/CanopyScene'
@@ -32,8 +33,13 @@ export function Playground() {
 }
 
 function Exhibit({ project: p, layout }: { project: Project; layout: 'a' | 'b' | 'c' | 'd' }) {
+  const [ref, seen] = useSeen<HTMLElement>(0.25)
   return (
-    <article className={`exhibit exhibit--${layout}`} aria-labelledby={`${p.id}-name`}>
+    <article
+      ref={ref}
+      className={`exhibit exhibit--${layout}${seen ? ' is-seen' : ''}`}
+      aria-labelledby={`${p.id}-name`}
+    >
       <div className="exhibit-text">
         {(p.context || p.status === 'in progress') && (
           <p className="exhibit-context">

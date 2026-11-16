@@ -108,5 +108,9 @@ export interface Next {
   now: string[]
   ambition: string | null
   invite: string
+  /** Labels for the copy-email button. */
+  copy: string
+  copied: string
+  copyFailed: string
   closing: string
 }

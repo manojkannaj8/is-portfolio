@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react'
 import { chapters, projects, toolkit, toolPlaces } from '../content/portfolio'
+import { useSeen } from '../motion/useInView'
 import { ChalkEdge } from '../ui/Chalk'
 import { ChapterHead } from '../ui/ChapterHead'
 import './toolkit.css'
@@ -16,6 +17,7 @@ export function Toolkit() {
     () => [...projects.map((p) => ({ id: p.id, name: p.name })), ...toolPlaces],
     [],
   )
+  const [boxRef, boxSeen] = useSeen<HTMLDivElement>(0.25)
   const [tool, setTool] = useState<string | null>(null)
   const [pinned, setPinned] = useState<string | null>(null)
   const [place, setPlace] = useState<string | null>(null)
@@ -45,18 +47,19 @@ export function Toolkit() {
       <div className="wrap">
         <ChapterHead chapter={chapter} align="end" />
         <div className={`board${activeTool ? ' has-tool' : ''}${place ? ' has-place' : ''}`}>
-          <div className="chalkbox">
-            {toolkit.map((g) => (
+          <div ref={boxRef} className={`chalkbox${boxSeen ? ' is-seen' : ''}`}>
+            {toolkit.map((g, gi) => (
               <div key={g.name} className="stick-group" style={{ '--c': `var(--${g.ink})` } as React.CSSProperties}>
                 <h3 className="stick-group-name">{g.name}</h3>
                 <ul className="sticks">
-                  {g.tools.map((t) => {
+                  {g.tools.map((t, ti) => {
                     const lit = activeTool === t.name || (placeTools?.has(t.name) ?? false)
                     return (
                       <li key={t.name}>
                         <button
                           type="button"
                           className={`stick-btn${lit ? ' is-lit' : ''}`}
+                          style={{ '--i': gi * 3 + ti, '--r': `${((gi * 7 + ti * 5) % 9) - 4}deg` } as React.CSSProperties}
                           aria-pressed={pinned === t.name}
                           onPointerEnter={(e) => e.pointerType === 'mouse' && setTool(t.name)}
                           onPointerLeave={(e) => e.pointerType === 'mouse' && setTool(null)}
@@ -76,7 +79,9 @@ export function Toolkit() {
 
           <div className="slate">
             <p className="slate-hint" aria-live="polite">
-              {status || 'Pick up a stick of chalk.'}
+              <span key={activeTool ?? 'none'} className="slate-hint-text">
+                {status || 'Pick up a stick of chalk.'}
+              </span>
             </p>
             <ul className="places">
               {places.map((p) => {
